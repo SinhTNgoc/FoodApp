@@ -1,9 +1,18 @@
-import { Header } from "./components";
+import { Route, Routes } from "react-router-dom";
+import { Header, MainContainer, CreateContainer } from "./components";
 
 function App() {
-  return <div className="w-screen h-auto flex flex-col ">
-    <Header/>
-  </div>;
+  return (
+    <div className="w-screen h-auto flex flex-col">
+      <Header />
+      <main className="mt-24 p-8 w-full">
+        <Routes>
+          <Route path="/*" element={<MainContainer />} />
+          <Route path="/createItem" element={<CreateContainer />} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
 
 export default App;
