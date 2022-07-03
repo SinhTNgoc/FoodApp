@@ -1,4 +1,4 @@
-import { fetchUser } from "../components/utils/fetchLocalStorageData";
+import { fetchUser } from "../utils/fetchLocalStorageData";
 
 const userInfo = fetchUser();
 
