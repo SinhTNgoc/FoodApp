@@ -9,23 +9,121 @@ import {
 } from "react-icons/md";
 import { categoriesData } from "../utils/data";
 import Loader from "./Loader";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../firebase.config";
+import { saveItem } from "../utils/firebaseFuncs";
 
 const CreateContainer = () => {
   const [title, setTitle] = useState("");
   const [calories, setCalories] = useState("");
   const [price, setPrice] = useState("");
-  const [categories, setCategories] = useState(null);
+  const [category, setCategory] = useState("null");
   const [fields, setFields] = useState(false);
   const [alertStatus, setAlertStatus] = useState("danger");
   const [msg, setMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [imageAsset, setImageAsset] = useState(true);
+  const [imageAsset, setImageAsset] = useState(null);
 
-  const uploadImage = () => {};
+  const uploadImage = (e) => {
+    setIsLoading(true);
+    const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
-  const deleteImage = () => {};
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const uploadProgress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(uploadProgress + "%");
+      },
+      (error) => {
+        console.log(error);
+        setFields(true);
+        setMsg("Error while uploading...");
+        setAlertStatus("danger");
+        setTimeout(() => {
+          setFields(false);
+          setIsLoading(false);
+        }, 4000);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageAsset(downloadURL);
+          setIsLoading(false);
+          setFields(true);
+          setMsg("Image uploaded successfully!");
+          setAlertStatus("success");
+          setTimeout(() => {
+            setFields(false);
+          }, 4000);
+        });
+      }
+    );
+  };
 
-  const saveDetail = () => {};
+  const deleteImage = () => {
+    setIsLoading(true);
+    const deleteRef = ref(storage, imageAsset);
+    deleteObject(deleteRef).then(() => {
+      setImageAsset(null);
+      setIsLoading(false);
+      setFields(true);
+      setMsg("Image deleted successfully!");
+      setAlertStatus("success");
+      setTimeout(() => {
+        setFields(false);
+      }, 4000);
+    });
+  };
+
+  const saveDetails = () => {
+    setIsLoading(true);
+    try {
+      if (!title || !calories || !category || !imageAsset || !price) {
+        setFields(true);
+        setMsg("Required fields can't be empty...");
+        setAlertStatus("danger");
+        setTimeout(() => {
+          setFields(false);
+          setIsLoading(false);
+        }, 4000);
+      } else {
+        const data = {
+          id: `${Date.now()}`,
+          title: title,
+          calories: calories,
+          category: category,
+          imageURL: imageAsset,
+          price: price,
+          quantity: 1,
+        };
+        saveItem(data);
+
+        setTitle("");
+        setImageAsset(null);
+        setCalories("");
+        setCategory("null");
+        setPrice("");
+
+        setIsLoading(false);
+        setFields(true);
+        setMsg("Data uploaded successfully!");
+        setAlertStatus("success");
+        setTimeout(() => {
+          setFields(false);
+        }, 4000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-[90%] md:w-[75%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
@@ -57,11 +155,11 @@ const CreateContainer = () => {
 
         <div className="w-full">
           <select
-            value={categories}
-            onChange={(e) => setCategories(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             className="w-full px-2 border-0 outline-none text-gray-400 rounded-sm border-b border-gray-300 p-2 cursor-pointer"
           >
-            <option value="other" className="">
+            <option value="other" className="" defaultValue>
               Select Category
             </option>
             {categoriesData &&
@@ -153,7 +251,7 @@ const CreateContainer = () => {
           <button
             type="button"
             className="ml-0 md:ml-auto w-full md:w-auto border-none outline-none px-12 py-2 rounded-md text-lg bg-emerald-500 text-white cursor-pointer"
-            onClick={saveDetail}
+            onClick={saveDetails}
           >
             Save Detail
           </button>
