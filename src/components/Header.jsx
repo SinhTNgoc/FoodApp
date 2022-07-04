@@ -109,9 +109,12 @@ const Header = () => {
                 exit={{ opacity: 0, scale: 0.6 }}
                 className="w-40 bg-gray-100 shadow-xl p-2 rounded-xl flex flex-col absolute  top-12 -right-0 md:top-12 md:-right-12 "
               >
-                {user && user.email !== "tranngocsinh1212@gmail.com" && (
+                {user && user.email !== "tranngocsinh12121@gmail.com" && (
                   <Link to="/createItem">
-                    <p className="text-base text-textColor px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out rounded-xl ">
+                    <p
+                      className="text-base text-textColor px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out rounded-xl "
+                      onClick={() => setIsMenu(false)}
+                    >
                       New Item <MdAdd />
                     </p>
                   </Link>
