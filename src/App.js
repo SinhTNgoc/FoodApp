@@ -1,8 +1,23 @@
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Header, MainContainer, CreateContainer } from "./components";
+import { useStateValue } from "./context/StateProvider";
+import { getItems } from "./utils/firebaseFuncs";
+import { actionType } from "./context/reducer";
+import { useEffect } from "react";
 
 function App() {
+  const [{},dispatch] = useStateValue();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getItems().then((data) => {
+        dispatch({ type: actionType.SET_FOOD_ITEMS, foodItems: data });
+      });
+    };
+    fetchData();
+  }, [dispatch]);
+
   return (
     <AnimatePresence exitBeforeEnter>
       <div className="w-screen h-auto flex flex-col">
