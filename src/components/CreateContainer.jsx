@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useState } from "react";
 import { motion } from "framer-motion";
 import {
   MdFastfood,
@@ -18,7 +18,7 @@ import {
 import { storage } from "../firebase.config";
 import { saveItem } from "../utils/firebaseFuncs";
 
-import { globalState} from "../context/StateProvider";
+import {useStateValue} from "../context/StateProvider";
 import { getItems } from "../utils/firebaseFuncs";
 import { actionType } from "../context/actionType";
 
@@ -33,7 +33,7 @@ const CreateContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
 
-  const [state,dispatch] = useContext(globalState);
+  const [state,dispatch] = useStateValue();
 
   const fetchData = async () => {
     await getItems().then((data) => {

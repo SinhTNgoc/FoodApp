@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, {useState } from "react";
 import { IoFastFood } from "react-icons/io5";
 import { categoriesData } from "../utils/data";
 import { motion } from "framer-motion";
 import RowContainer from "./RowContainer";
-import { globalState } from "../context/StateProvider";
+import {useStateValue } from "../context/StateProvider";
 
 const MenuContainer = () => {
   const [filter, setFilter] = useState("chicken");
-  const [{ foodItems },dispatch] = useContext(globalState);
+  const [{ foodItems },dispatch] = useStateValue();
   return (
     <section className="w-full" id="menu">
       <div className="w-full flex flex-col items-center justify-center">

@@ -1,18 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, {useState } from "react";
 import HomeContainer from "./HomeContainer";
 
 import { motion } from "framer-motion";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import RowContainer from "./RowContainer";
-import { globalState } from "../context/StateProvider";
+import {useStateValue } from "../context/StateProvider";
 import MenuContainer from "./MenuContainer";
 import CartContainer from "./CartContainer";
 
 const MainContainer = () => {
   const [scrollValue, setScrollValue] = useState(0);
-  const [{ foodItems, cartShow },dispatch] = useContext(
-    globalState
-  );
+  const [{ foodItems, cartShow },dispatch] = useStateValue()
 
   return (
     <div className="w-full h-auto flex flex-col items-center justify-center">

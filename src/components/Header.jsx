@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import Avatar from "../img/avatar.png";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase.config";
-import { globalState} from "../context/StateProvider";
+import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
 
 const Header = () => {
@@ -17,7 +17,7 @@ const Header = () => {
 
   const [isMenu, setIsMenu] = useState(false);
 
-  const [{ user, cartShow, cartItems }, dispatch] = useContext(globalState);
+  const [{ user, cartShow, cartItems }, dispatch] = useStateValue();
 
   const login = async () => {
     if (!user) {

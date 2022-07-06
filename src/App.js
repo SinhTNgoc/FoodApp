@@ -3,11 +3,11 @@ import { AnimatePresence } from "framer-motion";
 import { Header, MainContainer, CreateContainer } from "./components";
 import { getItems } from "./utils/firebaseFuncs";
 import { actionType } from "./context/actionType";
-import { useEffect, useContext } from "react";
-import { globalState } from "./context/StateProvider";
+import { useEffect} from "react";
+import {useStateValue } from "./context/StateProvider";
 
 function App() {
-  const [state, dispatch] = useContext(globalState);
+  const [state, dispatch] = useStateValue();
 
   useEffect(() => {
     const fetchData = async () => {

@@ -15,7 +15,7 @@ export const StateProvider = ({ children }) => {
 
 //custom hooks
 
-// export const useStateValue = () => {
-//   const [state, dispatch] = useContext(globalState);
-//   return [state, dispatch];
-// };
+export const useStateValue = () => {
+  const [state, dispatch] = useContext(globalState);
+  return [state, dispatch];
+};

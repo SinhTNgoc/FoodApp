@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 
 import { motion } from "framer-motion";
-import { globalState} from "../context/StateProvider";
+import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
 import EmptyCart from "../img/emptyCart.svg";
 import CartItem from "./CartItem";
 
 const CartContainer = () => {
-  const [{ cartShow, cartItems }, dispatch] = useContext(globalState);
+  const [{ cartShow, cartItems }, dispatch] = useStateValue();
   const showCart = () => {
     dispatch({ type: actionType.SET_CART_SHOW, cartShow: !cartShow });
   };

@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import NotFound from "../img/NotFound.svg";
-import { globalState} from "../context/StateProvider";
+import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
 
 const RowContainer = ({ flag, data, scrollValue }) => {
   const rowContainerRef = useRef();
 
   //Handle add to cart
-  const [{ cartItems }, dispatch] = useContext(globalState);
+  const [{ cartItems }, dispatch] = useStateValue();
   // const [items, setItems] = useState([]);
 
   // useEffect(() => {
