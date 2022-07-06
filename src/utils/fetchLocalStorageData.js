@@ -14,3 +14,11 @@ export const fetchCart = () => {
   return cartInfo ? cartInfo : [];
 };
 
+export const fetchTotal = () => {
+  const total =
+    localStorage.getItem("total") !== "undefined"
+      ? JSON.parse(localStorage.getItem("total"))
+      : localStorage.clear();
+
+  return total;
+};

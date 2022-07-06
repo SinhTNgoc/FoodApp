@@ -11,8 +11,19 @@ import CartItem from "./CartItem";
 const CartContainer = () => {
   const [{ cartShow, cartItems }, dispatch] = useStateValue();
   
+
   const showCart = () => {
     dispatch({ type: actionType.SET_CART_SHOW, cartShow: !cartShow });
+  };
+
+  
+
+  const clearCart = () => {
+    dispatch({
+      type: actionType.SET_CARTITEMS,
+      cartItems: [],
+    });
+    localStorage.setItem("cartItems", JSON.stringify([]));
   };
 
   return (
@@ -34,6 +45,7 @@ const CartContainer = () => {
         <motion.p
           whileTap={{ scale: 0.4 }}
           className="flex items-center gap-2 bg-gray-300 rounded-2xl cursor-pointer text-base text-textColor px-2 hover:bg-gray-200 hover:shadow-md transition-all duration-100 ease-in-out"
+          onClick={clearCart}
         >
           Clear <RiRefreshFill />
         </motion.p>
