@@ -10,6 +10,7 @@ import CartItem from "./CartItem";
 
 const CartContainer = () => {
   const [{ cartShow, cartItems }, dispatch] = useStateValue();
+  
   const showCart = () => {
     dispatch({ type: actionType.SET_CART_SHOW, cartShow: !cartShow });
   };

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import NotFound from "../img/NotFound.svg";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
+
+let items = [];
 
 const RowContainer = ({ flag, data, scrollValue }) => {
   const rowContainerRef = useRef();
@@ -12,24 +14,59 @@ const RowContainer = ({ flag, data, scrollValue }) => {
   const [{ cartItems }, dispatch] = useStateValue();
   // const [items, setItems] = useState([]);
 
+  // const addToCart = (clickedItem) => {
+  //   setItems((prev) => {
+  //     const isItemInCart = prev.find((item) => item.id === clickedItem.id);
+  //     if (isItemInCart) {
+  //       return prev.map((item) =>
+  //         item.id === clickedItem.id
+  //           ? { ...item, quantity: item.quantity + 1 }
+  //           : item
+  //       );
+  //     }
+  //     return [...prev, { ...clickedItem, quantity: 1 }];
+  //   });
+
+  //   dispatch({
+  //     type: actionType.SET_CARTITEMS,
+  //     cartItems: items,
+  //   });
+  // };
+
   // useEffect(() => {
-  //   const addToCart = () => {
-  //     dispatch({
-  //       type: actionType.SET_CARTITEMS,
-  //       cartItems: items,
-  //     });
-  //     localStorage.setItem("cartItems", JSON.stringify(items));
+  //   const dispatchCartItems = () => {
+
   //   };
-  //   addToCart();
+  //   dispatchCartItems();
   // }, [items, dispatch]);
 
-  const addToCart = (item) => {
+  // useEffect(() => {
+  //   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  // }, [cartItems]);
+
+  const addToCart = (clickedItem) => {
+    const checkItemInCart = cartItems.find(
+      (item) => item.id === clickedItem.id
+    );
+    if (checkItemInCart) {
+      items = cartItems.map((item) =>
+        item.id === clickedItem.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    } else items = [...cartItems, { ...clickedItem, quantity: 1 }];
+
+    localStorage.setItem("cartItems", JSON.stringify(items));
+
     dispatch({
       type: actionType.SET_CARTITEMS,
-      cartItems: [...cartItems, item],
+      cartItems: items,
     });
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
+
+  // useEffect(() => {
+  //   localStorage.setItem("cartItems", JSON.stringify(items));
+  // }, []);
 
   //Handle click left & right slide show
   useEffect(() => {

@@ -13,3 +13,4 @@ export const fetchCart = () => {
       : localStorage.clear();
   return cartInfo ? cartInfo : [];
 };
+
