@@ -5,10 +5,9 @@ import NotFound from "../img/NotFound.svg";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
 
-let items = [];
-
 const RowContainer = ({ flag, data, scrollValue }) => {
   const rowContainerRef = useRef();
+  let items = useRef([]);
 
   //Handle add to cart
   const [{ cartItems }, dispatch] = useStateValue();
@@ -49,18 +48,18 @@ const RowContainer = ({ flag, data, scrollValue }) => {
       (item) => item.id === clickedItem.id
     );
     if (checkItemInCart) {
-      items = cartItems.map((item) =>
+      items.current = cartItems.map((item) =>
         item.id === clickedItem.id
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
-    } else items = [...cartItems, { ...clickedItem, quantity: 1 }];
+    } else items.current = [...cartItems, { ...clickedItem, quantity: 1 }];
 
-    localStorage.setItem("cartItems", JSON.stringify(items));
+    localStorage.setItem("cartItems", JSON.stringify(items.current));
 
     dispatch({
       type: actionType.SET_CARTITEMS,
-      cartItems: items,
+      cartItems: items.current,
     });
   };
 
