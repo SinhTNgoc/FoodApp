@@ -1,13 +1,21 @@
-import React, { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
+import reducer, { initialState } from "./reducer";
 
-export const StateContext = createContext();
+export const globalState = createContext();
 
-export const StateProvider = ({ reducer, initialState, children }) => {
+export const StateProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
-    <StateContext.Provider value={useReducer(reducer, initialState)}>
+    <globalState.Provider value={[state, dispatch]}>
       {children}
-    </StateContext.Provider>
+    </globalState.Provider>
   );
 };
 
-export const useStateValue = () => useContext(StateContext);
+//custom hooks
+
+// export const useStateValue = () => {
+//   const [state, dispatch] = useContext(globalState);
+//   return [state, dispatch];
+// };

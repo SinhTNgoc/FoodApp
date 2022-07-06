@@ -1,11 +1,37 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef} from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import NotFound from "../img/NotFound.svg";
+import { globalState} from "../context/StateProvider";
+import { actionType } from "../context/actionType";
 
 const RowContainer = ({ flag, data, scrollValue }) => {
   const rowContainerRef = useRef();
 
+  //Handle add to cart
+  const [{ cartItems }, dispatch] = useContext(globalState);
+  // const [items, setItems] = useState([]);
+
+  // useEffect(() => {
+  //   const addToCart = () => {
+  //     dispatch({
+  //       type: actionType.SET_CARTITEMS,
+  //       cartItems: items,
+  //     });
+  //     localStorage.setItem("cartItems", JSON.stringify(items));
+  //   };
+  //   addToCart();
+  // }, [items, dispatch]);
+
+  const addToCart = (item) => {
+    dispatch({
+      type: actionType.SET_CARTITEMS,
+      cartItems: [...cartItems, item],
+    });
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  };
+
+  //Handle click left & right slide show
   useEffect(() => {
     rowContainerRef.current.scrollLeft += scrollValue;
   }, [scrollValue]);
@@ -39,6 +65,7 @@ const RowContainer = ({ flag, data, scrollValue }) => {
               <motion.div
                 whileTap={{ scale: 0.75 }}
                 className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center cursor-pointer hover:shadow-md "
+                onClick={() => addToCart(item)}
               >
                 <MdShoppingBasket className="w-4 h-4 text-white" />
               </motion.div>
@@ -61,7 +88,9 @@ const RowContainer = ({ flag, data, scrollValue }) => {
             alt="notfound"
             className="w-full h-[320px] object-contain"
           />
-          <p className="text-2xl text-textColor capitalize">Item is not available</p>
+          <p className="text-2xl text-textColor capitalize">
+            Item is not available
+          </p>
         </div>
       )}
     </div>

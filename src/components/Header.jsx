@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
 import { motion } from "framer-motion";
@@ -8,8 +8,8 @@ import Avatar from "../img/avatar.png";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase.config";
-import { useStateValue } from "../context/StateProvider";
-import { actionType } from "../context/reducer";
+import { globalState} from "../context/StateProvider";
+import { actionType } from "../context/actionType";
 
 const Header = () => {
   const firebaseAuth = getAuth(app);
@@ -17,7 +17,7 @@ const Header = () => {
 
   const [isMenu, setIsMenu] = useState(false);
 
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, cartShow, cartItems }, dispatch] = useContext(globalState);
 
   const login = async () => {
     if (!user) {
@@ -40,6 +40,10 @@ const Header = () => {
     setIsMenu(false);
     localStorage.clear();
     dispatch({ type: actionType.SET_USER, user: null });
+  };
+
+  const showCart = () => {
+    dispatch({ type: actionType.SET_CART_SHOW, cartShow: !cartShow });
   };
   return (
     <header className="fixed z-50 w-full px-3 py-4 md:py-6 md:px-16 bg-red-300">
@@ -87,11 +91,18 @@ const Header = () => {
             </li>
           </motion.ul>
 
-          <div className="flex items-center justify-center relative">
+          <div
+            className="flex items-center justify-center relative"
+            onClick={showCart}
+          >
             <MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
-            <div className="w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center absolute -top-2 -right-2">
-              <p className="text-sm text-white font-semibold">2</p>
-            </div>
+            {cartItems && cartItems.length > 0 && (
+              <div className="w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center absolute -top-2 -right-2">
+                <p className="text-sm text-white font-semibold">
+                  {cartItems.length}
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="relative">
@@ -132,12 +143,16 @@ const Header = () => {
         </div>
       </div>
       {/* mobile */}
-      <div className="flex items-center justify-between md:hidden w-full h-full ">
+      <div className="md:hidden flex items-center justify-between  w-full h-full ">
         <div className="flex items-center justify-center relative">
           <MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
-          <div className="w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center absolute -top-2 -right-2">
-            <p className="text-sm text-white font-semibold">2</p>
-          </div>
+          {cartItems && cartItems.length > 0 && (
+            <div className="w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center absolute -top-2 -right-2">
+              <p className="text-sm text-white font-semibold">
+                {cartItems.length}
+              </p>
+            </div>
+          )}
         </div>
         <Link to="/" className="flex items-center justify-center gap-2">
           <img src={Logo} alt="Logo" className="w-8 object-cover" />

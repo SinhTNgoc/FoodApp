@@ -2,11 +2,18 @@ import React from "react";
 import Delivery from "../img/delivery.png";
 import HeroBg from "../img/heroBg.png";
 import { heroData } from "../utils/data";
+import { motion } from "framer-motion";
 
 const HomeContainer = () => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-2" id="home">
-      <div className="py-2 flex-1 flex flex-col items-start justify-center gap-6">
+      <motion.div
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 6, type: "tween" }}
+        exit={{ opacity: 0, x: -200 }}
+        className="py-2 flex-1 flex flex-col items-start justify-center gap-6"
+      >
         <div className="flex items-center gap-2 justify-center bg-orange-200 p-2 rounded-xl">
           <p className="text-base text-orange-500">Bike Delivery</p>
           <div className="w-6 h-6 rounded-full bg-white overflow-hidden drop-shadow-xl">
@@ -36,8 +43,14 @@ const HomeContainer = () => {
         >
           Order now
         </button>
-      </div>
-      <div className="py-2 flex-1 relative">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 6 , type: "tween" }}
+        exit={{ opacity: 0, x: 200 }}
+        className="py-2 flex-1 relative"
+      >
         <div className="w-full flex items-center">
           <img
             src={HeroBg}
@@ -70,7 +83,7 @@ const HomeContainer = () => {
               ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -51,8 +51,9 @@ module.exports = {
         cartNumBg: "#e80013",
         cartItem: "#2e3033",
         cartTotal: "#343739",
-        cardOverlay: "rgba(256,256,256,0.4)",
-        lightTextGray:"#9ca0ab"
+        cardOverlay: "rgba(256,256,256,0.8)",
+        lightTextGray: "#9ca0ab",
+        rowBg: "rgba(255,131,0,0.2)",
       },
       screens: {
         sm: "640px",
@@ -63,5 +64,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };

@@ -1,10 +1,18 @@
-export const actionType = {
-  SET_USER: "SET_USER",
-  SET_FOOD_ITEMS: "SET_FOOD_ITEMS",
+import { actionType } from "./actionType";
+import { fetchCart, fetchUser } from "../utils/fetchLocalStorageData";
+
+const userInfo = fetchUser();
+const cartInfo = fetchCart();
+
+export const initialState = {
+  user: userInfo,
+  foodItems: null,
+  cartShow: false,
+  cartItems: cartInfo,
 };
 
 const reducer = (state, action) => {
-  console.log(action);
+  // console.log(action);
   switch (action.type) {
     case actionType.SET_USER:
       return {
@@ -15,6 +23,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         foodItems: action.foodItems,
+      };
+    case actionType.SET_CART_SHOW:
+      return {
+        ...state,
+        cartShow: action.cartShow,
+      };
+    case actionType.SET_CARTITEMS:
+      return {
+        ...state,
+        cartItems: action.cartItems,
       };
     default:
       return state;
