@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 
@@ -10,13 +10,22 @@ import CartItem from "./CartItem";
 
 const CartContainer = () => {
   const [{ cartShow, cartItems }, dispatch] = useStateValue();
-  
+  const [total, setTotal] = useState(0);
+  const [flag, setFlag] = useState(1);
 
   const showCart = () => {
     dispatch({ type: actionType.SET_CART_SHOW, cartShow: !cartShow });
   };
 
-  
+
+  useEffect(() => {
+    let current = cartItems.reduce((acc, item) => {
+      return acc + +item.quantity * +item.price;
+    }, 0);
+    setTotal(current);
+  }, [cartItems,flag]);
+
+
 
   const clearCart = () => {
     dispatch({
@@ -54,7 +63,8 @@ const CartContainer = () => {
         <div className="w-full h-full bg-cartBg  rounded-t-[2rem] flex flex-col">
           <div className="w-full h-340 md:h-[440px] px-6 py-10 flex flex-col gap-4 overflow-y-scroll scrollbar-none">
             {cartItems.map((item, index) => (
-              <CartItem item={item} key={index} />
+              <CartItem item={item} key={index}  setFlag={setFlag}
+                  flag={flag}/>
             ))}
           </div>
 
@@ -62,7 +72,8 @@ const CartContainer = () => {
             <div className="w-full flex items-center justify-between">
               <p className="text-base text-textColor capitalize">Sub total</p>
               <p className="text-base text-textColor">
-                <span className="text-sm text-red-500">$</span>10
+                <span className="text-sm text-red-500">$</span>
+                {total}
               </p>
             </div>
             <div className="w-full flex items-center justify-between">
@@ -75,7 +86,8 @@ const CartContainer = () => {
             <div className="w-full flex items-center justify-between">
               <p className="text-base text-textColor capitalize">Total</p>
               <p className="text-base text-textColor">
-                <span className="text-sm text-red-500">$</span>10
+                <span className="text-sm text-red-500">$</span>
+                {total + 10}
               </p>
             </div>
             <motion.button

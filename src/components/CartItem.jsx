@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/actionType";
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, flag, setFlag }) => {
   const [{ cartItems }, dispatch] = useStateValue();
 
   const updateQuantity = (option, clickItem) => {
@@ -13,6 +13,7 @@ const CartItem = ({ item }) => {
       cartItems.forEach((item) => {
         if (item.id === clickItem.id) {
           item.quantity += 1;
+          setFlag(flag + 1);
         }
         dispatch({ type: actionType.SET_CARTITEMS, cartItems: cartItems });
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -22,6 +23,7 @@ const CartItem = ({ item }) => {
       cartItems.forEach((item) => {
         if (item.id === clickItem.id) {
           item.quantity -= 1;
+          setFlag(flag + 1);
           dispatch({ type: actionType.SET_CARTITEMS, cartItems: cartItems });
           localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
